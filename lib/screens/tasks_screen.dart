@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/models/TaskData.dart';
+import 'package:todo/models/task.dart';
 
-class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key, required this.title});
+import '../widgets/tasks_list.dart';
+import 'add_task_screen.dart';
 
-  final String title;
+class TasksScreen extends StatefulWidget {
+  const TasksScreen({super.key});
 
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        child: const Icon(
+        backgroundColor: Colors.lightBlueAccent,
+        child: Icon(
           Icons.add,
           color: Colors.white,
         ),
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-            ),
-            builder: (BuildContext context) {
-              return Container(
-                height: 250,
-                color: Colors.white,
-                child: const Center(
-                  child: Text(
-                    'Bottom dialog box ID: 1921678',
-                    style: TextStyle(fontSize: 24, color: Colors.black),
-                  ),
+            isScrollControlled: true,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-              );
-            },
+                child: AddTaskScreen(),
+              ),
+            ),
           );
         },
       ),
@@ -41,30 +44,29 @@ class TasksScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
                 top: 60.0, left: 30.0, right: 30.0, bottom: 30.0),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundImage:
-                  AssetImage("assets/images/dp.jpeg"),
+                  backgroundImage: AssetImage("assets/images/dp.jpeg"),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Safiul Mujnebin",
+                  "Md Safiul Mujnebin",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
                   "1921678@iub.edu.bd",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16.0,
+                    fontSize: 17.0,
                   ),
                 ),
                 SizedBox(height: 24),
@@ -72,11 +74,11 @@ class TasksScreen extends StatelessWidget {
                   "My Tasks",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  "0 Tasks",
+                  "${Provider.of<TaskData>(context).taskCount} Tasks",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -87,15 +89,18 @@ class TasksScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              decoration: const BoxDecoration(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.0,
+              ),
+              // color: Colors.white,
+              decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25.0),
-                  topRight: Radius.circular(25.0),
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
                 ),
               ),
-              //     child: // Your content here,
+              child: TasksList(),
             ),
           )
         ],
